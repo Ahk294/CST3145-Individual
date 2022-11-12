@@ -4,15 +4,15 @@ let lessonsArr = [
         subject: "Arduino",
         location: "Dubai",
         price: 2000,
-        spaces: 5,
+        spaces: 1,
         image: "images/arduino.png"
     },
     {
         id: 1002,
         subject: "Python",
-        location: "Abu Dhabi",
+        location: "Mumbai",
         price: 3000,
-        spaces: 5,
+        spaces: 2,
         image: "images/python.png"
     },
     {
@@ -20,7 +20,7 @@ let lessonsArr = [
         subject: "Physical Education",
         location: "Sharjah",
         price: 1500,
-        spaces: 5,
+        spaces: 3,
         image: "images/pe.png"
     },
     {
@@ -28,7 +28,7 @@ let lessonsArr = [
         subject: "UI/UX",
         location: "Riyadh",
         price: 3000,
-        spaces: 5,
+        spaces: 4,
         image: "images/uiux.png"
     },
     {
@@ -44,7 +44,7 @@ let lessonsArr = [
         subject: "Psychology",
         location: "Delhi",
         price: 1000,
-        spaces: 5,
+        spaces: 6,
         image: "images/psychology.png"
     },
     {
@@ -52,7 +52,7 @@ let lessonsArr = [
         subject: "Art 101",
         location: "Paris",
         price: 2500,
-        spaces: 5,
+        spaces: 7,
         image: "images/art.png"
     },
     {
@@ -60,7 +60,7 @@ let lessonsArr = [
         subject: "Game Development",
         location: "Tbilisi",
         price: 3000,
-        spaces: 5,
+        spaces: 8,
         image: "images/game.png"
     },
     {
@@ -68,7 +68,7 @@ let lessonsArr = [
         subject: "Virtual Reality",
         location: "London",
         price: 2000,
-        spaces: 5,
+        spaces: 9,
         image: "images/vr.png"
     },
     {
@@ -76,7 +76,7 @@ let lessonsArr = [
         subject: "Augmented Reality",
         location: "Karachi",
         price: 2500,
-        spaces: 5,
+        spaces: 10,
         image: "images/ar.png"
     },
 ];
