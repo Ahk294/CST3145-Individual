@@ -244,7 +244,7 @@
     </div>
 
     <!-- footer -->
-    <div class="text-center p-4 bg-secondary">
+    <div class="footer text-center p-4 bg-secondary">
       <a style="text-decoration: none" class="text-white fw-bold"
         href="https://www.linkedin.com/in/abdul-haseeb-khan-b1020815a/">Abdul Haseeb Khan - M00792907</a>
     </div>
@@ -257,10 +257,10 @@
       // Initial data has been declared as a function
       data: {
         sitename: "After School Activities",
-        // Creating lesson object
+        // Creating lessons array which is imported from lessons.js
         lessons: lessonsArr,
         showProductPage: true,
-        // Creating cart object with empty array
+        // Creating cart empty array
         cart: [],
         cartLength: false,
         sortBy: 'subject',
@@ -270,6 +270,7 @@
         searchTerm: ''
       },
       methods: {
+        // search function that loops through the lesson cards and looks for the term typed in the search bar
         search() {
           let value = this.searchTerm.toLowerCase();
           let lessons = document.getElementsByClassName("lesson");
@@ -286,6 +287,7 @@
         addToCart: function (lesson) {
           this.cart.push(lesson);
         },
+        // keeps count of the quantity of a particular lesson in the cart
         cartCount(id) {
           let count = 0;
           for (let i = 0; i < this.cart.length; i++) {
@@ -295,7 +297,7 @@
           }
           return count;
         },
-        // This checks if the lesson has spaces available.
+        // checks if the lesson has spaces available.
         canAddToCart(lesson) {
           return lesson.spaces > this.cartCount(lesson.id);
         },
@@ -353,9 +355,11 @@
             return lessonsArr.reverse();
           }
         },
+        // using regex with the test() method to validate the checkout form
         validateForm() {
           return /^(?!\s*$)[a-zA-Z.+\s'-]+$/.test(this.name) && /^(?!\s*$)[0-9.+\s'-]+$/.test(this.phone) && this.phone.length === 10 && this.cart.length > 0;
         },
+        // used for enabling and disabling the cart button based on whether the cart is empty or not
         checkCartLength() {
           if (this.cart.length > 0) {
             this.cartLength = true;
