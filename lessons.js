@@ -1,10 +1,11 @@
+// creating array or lesson objects to use in index.html
 let lessonsArr = [
     {
         id: 1001,
         subject: "Arduino",
         location: "Dubai",
         price: 2000,
-        spaces: 1,
+        spaces: 5,
         image: "images/arduino.png"
     },
     {
@@ -12,7 +13,7 @@ let lessonsArr = [
         subject: "Python",
         location: "Mumbai",
         price: 3000,
-        spaces: 2,
+        spaces: 5,
         image: "images/python.png"
     },
     {
@@ -20,7 +21,7 @@ let lessonsArr = [
         subject: "Physical Education",
         location: "Sharjah",
         price: 1500,
-        spaces: 3,
+        spaces: 5,
         image: "images/pe.png"
     },
     {
@@ -28,7 +29,7 @@ let lessonsArr = [
         subject: "UI/UX",
         location: "Riyadh",
         price: 3000,
-        spaces: 4,
+        spaces: 5,
         image: "images/uiux.png"
     },
     {
@@ -44,7 +45,7 @@ let lessonsArr = [
         subject: "Psychology",
         location: "Delhi",
         price: 1000,
-        spaces: 6,
+        spaces: 5,
         image: "images/psychology.png"
     },
     {
@@ -52,7 +53,7 @@ let lessonsArr = [
         subject: "Art 101",
         location: "Paris",
         price: 2500,
-        spaces: 7,
+        spaces: 5,
         image: "images/art.png"
     },
     {
@@ -60,7 +61,7 @@ let lessonsArr = [
         subject: "Game Development",
         location: "Tbilisi",
         price: 3000,
-        spaces: 8,
+        spaces: 5,
         image: "images/game.png"
     },
     {
@@ -68,7 +69,7 @@ let lessonsArr = [
         subject: "Virtual Reality",
         location: "London",
         price: 2000,
-        spaces: 9,
+        spaces: 5,
         image: "images/vr.png"
     },
     {
@@ -76,7 +77,7 @@ let lessonsArr = [
         subject: "Augmented Reality",
         location: "Karachi",
         price: 2500,
-        spaces: 10,
+        spaces: 5,
         image: "images/ar.png"
     },
 ];
