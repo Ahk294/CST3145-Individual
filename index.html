@@ -31,12 +31,23 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <button v-on:click="showCartPage" v-if="showProductPage" class="btn btn-outline-light" type="submit">
-                <i class="fa-solid fa-cart-shopping"></i> Cart ({{this.cart.length}})
-              </button>
-              <button v-on:click="showCartPage" v-else class="btn btn-outline-light" type="submit">
-                <i class="fa-solid fa-home"></i> Home
-              </button>
+              <span v-if="cartLength">
+                <button v-on:click="showCartPage" v-if="showProductPage" class="btn btn-outline-light" type="submit">
+                  <i class="fa-solid fa-cart-shopping"></i> Cart ({{this.cart.length}})
+                </button>
+                <button v-on:click="showCartPage" v-else class="btn btn-outline-light" type="submit">
+                  <i class="fa-solid fa-home"></i> Home
+                </button>
+              </span>
+              <span v-else>
+                <button disabled v-on:click="showCartPage" v-if="showProductPage" class="btn btn-outline-light"
+                  type="submit">
+                  <i class="fa-solid fa-cart-shopping"></i> Cart ({{this.cart.length}})
+                </button>
+                <button v-on:click="showCartPage" v-else class="btn btn-outline-light" type="submit">
+                  <i class="fa-solid fa-home"></i> Home
+                </button>
+              </span>
               <button class="btn btn-outline-light" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasFilter" aria-controls="offcanvasFilter">
                 Show Filter
@@ -53,6 +64,7 @@
       </div>
     </nav>
 
+    <!-- offcanvas -->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title display-5" id="offcanvasFilterLabel">Filter</h5>
@@ -105,6 +117,25 @@
             <label class="form-check-label" for="descending">
               Descending
             </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal for order confirmation -->
+    <div class="modal fade" id="orderConfirm" tabindex="-1" aria-labelledby="orderConfirmLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="orderConfirmLabel">Order Confirmed</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Your order has been placed! Thank you and visit again!</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Okay</button>
           </div>
         </div>
       </div>
@@ -184,8 +215,31 @@
             </div>
           </div>
         </div>
+        <hr>
+        <h1 class="display-6 text-center pt-2">Checkout</h1>
+        <div class="row">
+          <div class="mb-3 col-12 col-md-6 col-lg-6">
+            <label for="name" class="form-label">Name</label>
+            <input v-model="name" type="text" class="form-control" id="name" placeholder="Fullname">
+          </div>
+          <div class="mb-3 col-12 col-md-6 col-lg-6">
+            <label for="phone" class="form-label">Phone</label>
+            <input v-model="phone" type="number" class="form-control" id="phone" placeholder="971501234567">
+          </div>
+          <div class="mb-3 d-flex justify-content-center">
+            <button v-if="validateForm" id="btn_checkout" class="btn btn-success" data-bs-toggle="modal"
+              data-bs-target="#orderConfirm">
+              Checkout
+            </button>
+            <button disabled v-else id="btn_checkout" class="btn btn-success">
+              Checkout
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- footer -->
     <div class="text-center p-4 bg-secondary">
       <a style="text-decoration: none" class="text-white fw-bold"
         href="https://www.linkedin.com/in/abdul-haseeb-khan-b1020815a/">Abdul Haseeb Khan - M00792907</a>
@@ -204,8 +258,11 @@
         showProductPage: true,
         // Creating cart object with empty array
         cart: [],
+        cartLength: false,
         sortBy: 'subject',
-        sortRule: 'ascending'
+        sortRule: 'ascending',
+        name: '',
+        phone: '',
       },
       methods: {
         // Add the lesson to the cart
@@ -253,7 +310,7 @@
       },
       // Computed properties are added.
       computed: {
-        // soting the lessons
+        // sorting the lessons
         sortedLessons() {
           let lessonsArr = this.lessons.slice(0);
 
@@ -278,7 +335,16 @@
             lessonsArr.sort(this.compare);
             return lessonsArr.reverse();
           }
-
+        },
+        validateForm() {
+          return /^(?!\s*$)[a-zA-Z.+\s'-]+$/.test(this.name) && /^(?!\s*$)[0-9.+\s'-]+$/.test(this.phone) && this.phone.length === 10 && this.cart.length > 0;
+        },
+        checkCartLength() {
+          if (this.cart.length > 0) {
+            this.cartLength = true;
+          } else {
+            this.cartLength = false;
+          }
         }
       },
     });
