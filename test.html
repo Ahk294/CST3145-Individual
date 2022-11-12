@@ -1,0 +1,39 @@
+<div class="row">
+    <!-- <div v-for="lesson in lessons"> -->
+    <div class="col-lg-3">
+        <div class="card">
+            <!-- div containing the subject name -->
+            <div class="card-header">
+                <header>
+                    <!-- {{ propertyName }} Moustache syntax will derive value from 'subject' attribute of 'lesson' object -->
+                    <h5 class="card-title">Subject: {{lesson.subject}}</h5>
+                </header>
+            </div>
+            <!-- div containing lesson details -->
+            <div class="card-body">
+                <main>
+                    <!-- Similarly through moustache syntax, different values will be injected of the 'lesson' object -->
+                    <p class="card-text">Location: {{lesson.location}}</p>
+                    <p class="card-text">Price: AED {{lesson.price}}</p>
+                    <p class="card-text">Spaces: {{lesson.spaces}}</p>
+
+                    <div class="d-flex">
+                        <!-- Add to cart button -->
+                        <!-- v-on:click directive is used to add a click event handler that will trigger the 'addToCart' method. -->
+                        <!-- v-if directive will only render the button if the 'canAddToCart' method returns True-->
+                        <button v-on:click="addToCart(lesson)" v-if="canAddToCart(lesson)" id="btn_add"
+                            class="btn btn-primary ms-auto">
+                            Add to Cart
+                        </button>
+
+                        <!-- v-else directive will be rendered if the preceding v-if returns False. This will show a disabled button -->
+                        <button disabled="disabled" v-else class="btn btn-primary ms-auto">
+                            Add to Cart
+                        </button>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <!-- </div> -->
+</div>
