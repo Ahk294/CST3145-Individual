@@ -20,6 +20,7 @@
 <body class="bg-light">
   <!-- Mounting an app -->
   <div id="app">
+    <!-- navbar -->
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <!-- v-text directive will be used to update the text with the value provided for data key 'sitename' -->
@@ -55,8 +56,9 @@
             </li>
           </ul>
           <div class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn btn-outline-light" type="submit">
+            <input v-on:keyup="search" v-model="searchTerm" class="form-control me-2" type="search" placeholder="Search"
+              aria-label="Search" />
+            <button v-on:click="search" class="btn btn-outline-light" type="submit">
               Search
             </button>
           </div>
@@ -142,10 +144,11 @@
     </div>
 
     <div class="container mt-5">
+      <!-- product page -->
       <div v-if="showProductPage">
         <div class="row">
-          <div class="col-12 col-md-6 col-lg-4" v-for="lesson in sortedLessons">
-            <div class="card m-4">
+          <div id="lessons" class="col-12 col-md-6 col-lg-4" v-for="lesson in sortedLessons">
+            <div class="card m-4 lesson">
               <img v-bind:src="lesson.image" class="card-img-top" />
               <!-- div containing lesson details -->
               <div class="card-body">
@@ -184,6 +187,7 @@
         </div>
       </div>
 
+      <!-- cart and checkout page -->
       <div v-else>
         <h1 class="display-6 text-center pt-2">Number of items in cart: {{this.cart.length}}</h1>
         <div class="row">
@@ -263,8 +267,21 @@
         sortRule: 'ascending',
         name: '',
         phone: '',
+        searchTerm: ''
       },
       methods: {
+        search() {
+          let value = this.searchTerm.toLowerCase();
+          let lessons = document.getElementsByClassName("lesson");
+
+          for (i = 0; i < lessons.length; i++) {
+            if (lessons[i].textContent.toLowerCase().includes(value)) {
+              lessons[i].style.display = "";
+            } else {
+              lessons[i].style.display = "none";
+            }
+          }
+        },
         // Add the lesson to the cart
         addToCart: function (lesson) {
           this.cart.push(lesson);
