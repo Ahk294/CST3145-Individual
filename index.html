@@ -16,54 +16,47 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
     integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <title>Classes</title>
+  <title>Activities</title>
 </head>
 
 <body class="bg-light">
   <!-- Mounting an app -->
   <div id="app">
     <!-- navbar -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark py-2">
       <div class="container-fluid">
         <!-- v-text directive will be used to update the text with the value provided for data key 'sitename' -->
         <span class="navbar-brand" v-text="sitename"></span>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+          aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav mb-lg-0 container-fluid">
+            <li class="nav-item ms-auto me-auto">
+              <!-- disables the button if the cart length is 0 -->
+              <div class="d-inline-flex">
+                <input v-on:keyup="search" v-model="searchTerm" class="form-control" type="search" placeholder="Search"
+                  aria-label="Search" />
+              </div>
+            </li>
             <li class="nav-item">
-              <span v-if="cartLength">
-                <button v-on:click="showCartPage" v-if="showProductPage" class="btn btn-outline-light" type="submit">
-                  <i class="fa-solid fa-cart-shopping"></i> Cart ({{this.cart.length}})
-                </button>
-                <button v-on:click="showCartPage" v-else class="btn btn-outline-light" type="submit">
-                  <i class="fa-solid fa-home"></i> Home
-                </button>
-              </span>
-              <span v-else>
-                <button disabled v-on:click="showCartPage" v-if="showProductPage" class="btn btn-outline-light"
-                  type="submit">
-                  <i class="fa-solid fa-cart-shopping"></i> Cart ({{this.cart.length}})
-                </button>
-                <button v-on:click="showCartPage" v-else class="btn btn-outline-light" type="submit">
-                  <i class="fa-solid fa-home"></i> Home
-                </button>
-              </span>
-              <button class="btn btn-outline-light" type="button" data-bs-toggle="offcanvas"
+              <button class="btn btn-outline-light ms-3" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasFilter" aria-controls="offcanvasFilter">
                 Show Filter
               </button>
+
+              <button :disabled="this.cart.length == 0" v-on:click="showCartPage" v-if="showProductPage"
+                class="btn btn-outline-light ms-3" type="submit">
+                <i class="fa-solid fa-cart-shopping"></i> Checkout ({{this.cart.length}})
+              </button>
+              <button v-on:click="showCartPage" v-else class="btn btn-outline-light ms-3" type="submit">
+                <i class="fa-solid fa-home"></i> Home
+              </button>
             </li>
           </ul>
-          <div class="d-flex">
-            <input v-on:keyup="search" v-model="searchTerm" class="form-control me-2" type="search" placeholder="Search"
-              aria-label="Search" />
-            <button v-on:click="search" class="btn btn-outline-light" type="submit">
-              Search
-            </button>
-          </div>
+
         </div>
       </div>
     </nav>
@@ -318,6 +311,10 @@
             }
           }
           arr.splice(index, 1);
+
+          if (this.cart.length === 0) {
+            this.showProductPage = true;
+          }
         },
         // function to sort alphabetical attributes like subject and location
         compare(a, b) {
@@ -362,14 +359,6 @@
         validateForm() {
           return /^(?!\s*$)[a-zA-Z.+\s'-]+$/.test(this.name) && /^(?!\s*$)[0-9.+\s'-]+$/.test(this.phone) && this.phone.length === 10 && this.cart.length > 0;
         },
-        // used for enabling and disabling the cart button based on whether the cart is empty or not
-        checkCartLength() {
-          if (this.cart.length > 0) {
-            this.cartLength = true;
-          } else {
-            this.cartLength = false;
-          }
-        }
       },
     });
   </script>
