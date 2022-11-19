@@ -33,7 +33,11 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mb-lg-0 container-fluid">
             <li class="nav-item">
-              <button class="btn btn-outline-light" type="button" data-bs-toggle="offcanvas"
+              <button v-if="showLessonPage" class="btn btn-outline-light" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasFilter" aria-controls="offcanvasFilter">
+                <i class="fa-solid fa-filter"></i> Show Filter
+              </button>
+              <button v-else disabled class="btn btn-outline-light" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasFilter" aria-controls="offcanvasFilter">
                 <i class="fa-solid fa-filter"></i> Show Filter
               </button>
@@ -300,46 +304,53 @@
       el: "#app",
       // Initial data has been declared as a function
       data: {
+        // string variables for different functionalities (sort, search, validation)
         sitename: "After School Activities",
-        // Creating lessons array which is imported from lessons.js
-        lessons: lessonsArr,
-        showLessonPage: true,
-        // Creating cart empty array
-        cart: [],
-        searchArr: [],
-        searchStatus: false,
-        cartLength: false,
         sortBy: 'subject',
         sortRule: 'ascending',
         name: '',
         phone: '',
-        searchTerm: ''
+        searchTerm: '',
+        // boolean variables for showing/hiding divs
+        showLessonPage: true,
+        searchStatus: false,
+        cartLength: false,
+        // Creating lessons array which is imported from lessons.js
+        lessons: lessonsArr,
+        // array to store the purchased lessons
+        cart: [],
+        // array to store lessons that match the search terms
+        searchArr: [],
       },
       methods: {
-        // search function that loops through the lesson cards and looks for the term typed in the search bar
         search() {
+          // search function that loops through the lesson cards and looks for the term typed in the search bar
           this.searchArr = [];
           this.searchStatus = true;
           let term = this.searchTerm.toLowerCase();
           let lessons = this.lessons;
 
+          // if nothing is searched, then the normal home page is shown
           if (term == "") {
             this.searchStatus = false;
           }
 
+          /* if the term/s typed in the searchbar are found in the 'subject' or 'location' of a lesson,
+             then that lesson's object is pushed into the searchArr so that it can be rendered on the search page
+          */
           for (let i = 0; i < lessons.length; i++) {
             if (lessons[i].subject.toLowerCase().includes(term.toLowerCase()) || lessons[i].location.toLowerCase().includes(term.toLowerCase())) {
               this.searchArr.push(lessons[i]);
             }
           }
         },
-        // Add the lesson to the cart
         addToCart: function (lesson) {
+          // remove 1 space from the lesson and add it to the cart
           lesson.spaces--;
           this.cart.push(lesson);
         },
-        // keeps count of the quantity of a particular lesson in the cart
         cartCount(id) {
+          // keeps count of the quantity of a particular lesson in the cart
           let count = 0;
           for (let i = 0; i < this.cart.length; i++) {
             if (this.cart[i] === id) {
@@ -348,14 +359,15 @@
           }
           return count;
         },
-        // checks if the lesson has spaces available.
         canAddToCart(lesson) {
+          // checks if the lesson has spaces available.
           return lesson.spaces > this.cartCount(lesson.id);
         },
         showCheckoutPage() {
           // terinary operation to toggle checkout page
           this.showLessonPage = this.showLessonPage ? false : true;
 
+          // condition to allow the user to retain their serach reults page for better user experience
           if (this.showLessonPage === true && this.searchTerm) {
             this.searchStatus = true;
           } else {
@@ -368,13 +380,14 @@
           let arr = this.cart;
           let lessons = this.lessons;
 
-
+          // finding the index of the object/lesson to be removed
           for (let i = 0; i < arr.length; i++) {
             if (arr[i]["id"] === idValue) {
               index = i;
             }
           }
 
+          // adding back 1 space to the lesson that was removed from cart
           for (let i = 0; i < lessons.length; i++) {
             if (lessons[i]["id"] === idValue) {
               lessons[i].spaces = lessons[i].spaces + 1;
@@ -382,21 +395,12 @@
           }
           arr.splice(index, 1);
 
+          // condition to automatically direct user to the home page when there are no items in the cart
           if (this.cart.length === 0) {
             this.showLessonPage = true;
             this.searchTerm = '';
           }
         },
-        // function to sort alphabetical attributes like subject and location
-        compare(a, b) {
-          if ((this.sortBy === 'subject' && a.subject > b.subject) || (this.sortBy === 'location' && a.location > b.location)) {
-            return 1;
-          }
-          if ((this.sortBy === 'subject' && a.subject < b.subject) || (this.sortBy === 'location' && a.location < b.location)) {
-            return -1;
-          }
-          return 0;
-        }
       },
       // Computed properties are added.
       computed: {
@@ -418,12 +422,22 @@
               lessonsArr.sort((a, b) => { return b.spaces - a.spaces; });
           }
 
-          // sorting subject or location
-          if ((this.sortBy === 'subject' || this.sortBy === 'location') && this.sortRule === 'ascending') {
-            return lessonsArr.sort(this.compare);
-          } else {
-            lessonsArr.sort(this.compare);
-            return lessonsArr.reverse();
+          // sorting subject
+          if (this.sortBy === 'subject') {
+            if (this.sortRule === 'ascending') {
+              return lessonsArr.sort((a, b) => (a.subject > b.subject) ? 1 : -1);
+            } else {
+              return lessonsArr.sort((a, b) => (a.subject < b.subject) ? 1 : -1);
+            }
+          }
+
+          // sorting location
+          if (this.sortBy === 'location') {
+            if (this.sortRule === 'ascending') {
+              return lessonsArr.sort((a, b) => (a.location > b.location) ? 1 : -1);
+            } else {
+              return lessonsArr.sort((a, b) => (a.location < b.location) ? 1 : -1);
+            }
           }
         },
         // using regex with the test() method to validate the checkout form
