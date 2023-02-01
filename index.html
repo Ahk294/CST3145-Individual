@@ -277,8 +277,8 @@
               <input v-model="phone" type="number" class="form-control" id="phone" placeholder="971501234567">
             </div>
             <div class="mb-3 d-flex justify-content-center">
-              <button v-if="validateForm" id="btn_checkout" class="btn btn-success" data-bs-toggle="modal"
-                data-bs-target="#orderConfirm">
+              <button v-if="validateForm" v-on:click="reset" id="btn_checkout" class="btn btn-success"
+                data-bs-toggle="modal" data-bs-target="#orderConfirm">
                 Checkout
               </button>
               <button disabled v-else id="btn_checkout" class="btn btn-success">
@@ -299,11 +299,8 @@
 
   <!-- vue.js code -->
   <script>
-    // Create a Vue instance with some options
-    let app = new Vue({
-      el: "#app",
-      // Initial data has been declared as a function
-      data: {
+    function getInitialData() {
+      return {
         // string variables for different functionalities (sort, search, validation)
         sitename: "After School Activities",
         sortBy: 'subject',
@@ -321,8 +318,17 @@
         cart: [],
         // array to store lessons that match the search terms
         searchArr: [],
-      },
+      };
+    }
+    // Create a Vue instance with some options
+    let app = new Vue({
+      el: "#app",
+      // Initial data has been declared as a function
+      data: getInitialData(),
       methods: {
+        reset() {
+          Object.assign(this.$data, getInitialData());
+        },
         search() {
           // search function that loops through the lesson cards and looks for the term typed in the search bar
           this.searchArr = [];
